@@ -48,8 +48,10 @@
  */
 
 #import "APLMasterViewController.h"
-
+#import "APLAppDelegate.h"
 #import "APLEvent.h"
+#import "NSManagedObjectContext+Convenient.h"
+#import "NSString+Custom.h"
 
 
 @interface APLMasterViewController ()
@@ -173,11 +175,72 @@
 	[fetchRequest setSortDescriptors:@[sortDescriptor ]];
 
     // Use the sectionIdentifier property to group into sections.
-    _fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:self.managedObjectContext sectionNameKeyPath:@"sectionIdentifier" cacheName:@"Root"];
+    _fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:self.managedObjectContext sectionNameKeyPath:@"sectionIdentifier" cacheName:nil];
     _fetchedResultsController.delegate = self;
 
 	return _fetchedResultsController;
-}    
+}
 
+// begin: https://developer.apple.com/library/tvos/documentation/Cocoa/Conceptual/CoreData/nsfetchedresultscontroller.html
+- (void)controllerWillChangeContent:(NSFetchedResultsController *)controller {
+    [self.tableView beginUpdates];
+}
+
+- (void)controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath {
+    switch(type) {
+        case NSFetchedResultsChangeInsert:
+            [self.tableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+            break;
+        case NSFetchedResultsChangeDelete:
+            [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+            break;
+        case NSFetchedResultsChangeUpdate:
+            break;
+        case NSFetchedResultsChangeMove:
+            [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+            [self.tableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+            break;
+    }
+}
+
+- (void)controller:(NSFetchedResultsController *)controller didChangeSection:(id<NSFetchedResultsSectionInfo>)sectionInfo atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type {
+    switch(type) {
+        case NSFetchedResultsChangeInsert:
+            [self.tableView insertSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];
+            break;
+        case NSFetchedResultsChangeDelete:
+            [self.tableView deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];
+            break;
+        case NSFetchedResultsChangeMove:
+        case NSFetchedResultsChangeUpdate:
+            break;
+    }
+}
+
+- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
+    [self.tableView endUpdates];
+}
+// end: https://developer.apple.com/library/tvos/documentation/Cocoa/Conceptual/CoreData/nsfetchedresultscontroller.html
+
+#pragma mark UI actions
+
+- (IBAction)slowDataHandling:(UIBarButtonItem *)sender {
+    APLAppDelegate* appDelegate = [[UIApplication sharedApplication] delegate];
+    
+    [NSThread sleepForTimeInterval:5]; // simulating any kind of slow operation
+    APLEvent *newEvent = [NSEntityDescription insertNewObjectForEntityForName:@"APLEvent" inManagedObjectContext:[appDelegate managedObjectContext]];
+    NSDate* date = [self randomDate];
+    newEvent.timeStamp = date;
+    newEvent.title = [NSString customStringFromDate:date];
+    [[appDelegate managedObjectContext] saveAndHandle];
+}
+
+- (NSDate *)randomDate {
+    NSTimeInterval wholeInterval = [NSDate timeIntervalSinceReferenceDate];
+    div_t d = div(wholeInterval, 86400);
+    int daysInterval = d.quot;
+    int randomDay = arc4random_uniform(daysInterval);
+    return [NSDate dateWithTimeIntervalSinceReferenceDate:(double)randomDay * 86400.0];
+}
 
 @end

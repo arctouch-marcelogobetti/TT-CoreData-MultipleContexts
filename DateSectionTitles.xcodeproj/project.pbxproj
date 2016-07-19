@@ -20,6 +20,9 @@
 		28311B71175A7F9F0090C416 /* APLMasterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28311B6F175A7F9F0090C416 /* APLMasterViewController.m */; };
 		283C619117BD3B1200F143CA /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 283C619017BD3B1200F143CA /* Images.xcassets */; };
 		3A10F5761D3D062F004B6BCB /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3A10F5751D3D062F004B6BCB /* Default-568h@2x.png */; };
+		3A10F5781D3D6D8A004B6BCB /* AddItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A10F5771D3D6D8A004B6BCB /* AddItemViewController.m */; };
+		3A10F57C1D3D74F4004B6BCB /* NSString+Custom.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A10F57B1D3D74F4004B6BCB /* NSString+Custom.m */; };
+		3A10F5801D3D761C004B6BCB /* NSManagedObjectContext+Convenient.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A10F57F1D3D761C004B6BCB /* NSManagedObjectContext+Convenient.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,6 +45,12 @@
 		28311B6F175A7F9F0090C416 /* APLMasterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APLMasterViewController.m; sourceTree = "<group>"; };
 		283C619017BD3B1200F143CA /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		3A10F5751D3D062F004B6BCB /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+		3A10F5771D3D6D8A004B6BCB /* AddItemViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddItemViewController.m; sourceTree = "<group>"; };
+		3A10F5791D3D6D9C004B6BCB /* AddItemViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AddItemViewController.h; sourceTree = "<group>"; };
+		3A10F57A1D3D74F4004B6BCB /* NSString+Custom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Custom.h"; sourceTree = "<group>"; };
+		3A10F57B1D3D74F4004B6BCB /* NSString+Custom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Custom.m"; sourceTree = "<group>"; };
+		3A10F57E1D3D761C004B6BCB /* NSManagedObjectContext+Convenient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObjectContext+Convenient.h"; sourceTree = "<group>"; };
+		3A10F57F1D3D761C004B6BCB /* NSManagedObjectContext+Convenient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSManagedObjectContext+Convenient.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -91,6 +100,9 @@
 		28311B52175A7ED80090C416 /* DateSectionTitles */ = {
 			isa = PBXGroup;
 			children = (
+				3A10F57D1D3D74FD004B6BCB /* Categories */,
+				3A10F5791D3D6D9C004B6BCB /* AddItemViewController.h */,
+				3A10F5771D3D6D8A004B6BCB /* AddItemViewController.m */,
 				28311B6E175A7F9F0090C416 /* APLMasterViewController.h */,
 				28311B6F175A7F9F0090C416 /* APLMasterViewController.m */,
 				28311B64175A7ED80090C416 /* DateSectionTitles.xcdatamodeld */,
@@ -114,6 +126,17 @@
 				28311B5A175A7ED80090C416 /* DateSectionTitles-Prefix.pch */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		3A10F57D1D3D74FD004B6BCB /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				3A10F57A1D3D74F4004B6BCB /* NSString+Custom.h */,
+				3A10F57B1D3D74F4004B6BCB /* NSString+Custom.m */,
+				3A10F57E1D3D761C004B6BCB /* NSManagedObjectContext+Convenient.h */,
+				3A10F57F1D3D761C004B6BCB /* NSManagedObjectContext+Convenient.m */,
+			);
+			name = Categories;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -184,7 +207,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				28311B59175A7ED80090C416 /* main.m in Sources */,
+				3A10F5781D3D6D8A004B6BCB /* AddItemViewController.m in Sources */,
+				3A10F57C1D3D74F4004B6BCB /* NSString+Custom.m in Sources */,
 				28311B5D175A7ED80090C416 /* APLAppDelegate.m in Sources */,
+				3A10F5801D3D761C004B6BCB /* NSManagedObjectContext+Convenient.m in Sources */,
 				28311B66175A7ED80090C416 /* DateSectionTitles.xcdatamodeld in Sources */,
 				28311B70175A7F9F0090C416 /* APLEvent.m in Sources */,
 				28311B71175A7F9F0090C416 /* APLMasterViewController.m in Sources */,

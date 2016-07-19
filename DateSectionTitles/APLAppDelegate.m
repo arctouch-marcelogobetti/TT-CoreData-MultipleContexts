@@ -56,7 +56,7 @@
 
 @interface APLAppDelegate ()
 
-@property (nonatomic) NSManagedObjectContext *managedObjectContext;
+@property (nonatomic, readwrite) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic) NSManagedObjectModel *managedObjectModel;
 @property (nonatomic) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 
@@ -76,23 +76,6 @@
     controller.managedObjectContext = self.managedObjectContext;
     return YES;
 }
-							
-
-- (void)saveContext
-{
-    NSError *error;
-    NSManagedObjectContext *managedObjectContext = self.managedObjectContext;
-    if (managedObjectContext != nil)
-    {
-        if ([managedObjectContext hasChanges] && ![managedObjectContext save:&error])
-        {
-             // Replace this implementation with code to handle the error appropriately.
-             // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development. 
-            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-            abort();
-        } 
-    }
-}
 
 #pragma mark - Core Data stack
 
@@ -108,7 +91,7 @@
     NSPersistentStoreCoordinator *coordinator = [self persistentStoreCoordinator];
     if (coordinator != nil)
     {
-        _managedObjectContext = [[NSManagedObjectContext alloc] init];
+        _managedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
         [_managedObjectContext setPersistentStoreCoordinator:coordinator];
     }
     return _managedObjectContext;
@@ -137,8 +120,6 @@
     }
     
     NSURL *storeURL = [[self applicationDocumentsDirectory] URLByAppendingPathComponent:@"DateSectionTitles.dateSectionTitles"];
-
-    BOOL firstRun = ![storeURL checkResourceIsReachableAndReturnError:NULL];
 
     NSError *error;
     _persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];
@@ -169,37 +150,7 @@
          */
         NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
         abort();
-    }    
-    /*
-	 If this is the first run, populate a new store with events whose timestamps are spaced every 7 days throughout 2013 in the Gregorian calendar.
-	 */
-	if (firstRun)
-    {
-		NSManagedObjectContext *context = [[NSManagedObjectContext alloc] init];
-		[context setPersistentStoreCoordinator:_persistentStoreCoordinator];
-
-		NSDateComponents *dateComponents = [[NSDateComponents alloc] init];
-		[dateComponents setYear:2013];
-
-        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-        [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
-        [dateFormatter setTimeStyle:NSDateFormatterNoStyle];
-
-		NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
-        [dateFormatter setCalendar:calendar];
-
-        for (NSInteger day = 1; day < 365; day += 7)
-        {
-			[dateComponents setDay:day];
-			NSDate *date = [calendar dateFromComponents:dateComponents];
-
-			APLEvent *newEvent = [NSEntityDescription insertNewObjectForEntityForName:@"APLEvent" inManagedObjectContext:context];
-			newEvent.timeStamp = date;
-            newEvent.title = [NSString stringWithFormat:@"Gregorian: %@ (day %d)", [dateFormatter stringFromDate:date], [dateComponents day]];
-		}
-
-		[context save:NULL];
-	}
+    }
 
     return _persistentStoreCoordinator;
 }

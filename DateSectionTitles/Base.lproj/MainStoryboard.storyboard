@@ -1,27 +1,28 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4488.2" systemVersion="13A551" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="e8c-Bu-0EN">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="e8c-Bu-0EN">
     <dependencies>
-        <deployment defaultVersion="1536" identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3715.3"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--Master View Controller-->
         <scene sceneID="uXZ-i4-cMr">
             <objects>
                 <tableViewController id="so5-12-nBI" customClass="APLMasterViewController" sceneMemberID="viewController">
-                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="3Y0-EY-tGv">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="3Y0-EY-tGv">
                         <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" ambiguous="YES" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Cell" textLabel="JZn-2B-0bN" style="IBUITableViewCellStyleDefault" id="PGs-Fx-YIz">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Cell" textLabel="JZn-2B-0bN" style="IBUITableViewCellStyleDefault" id="PGs-Fx-YIz">
                                 <rect key="frame" x="0.0" y="22" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" tableViewCell="PGs-Fx-YIz" id="dMw-pB-91m">
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="PGs-Fx-YIz" id="dMw-pB-91m">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" ambiguous="YES" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="JZn-2B-0bN">
+                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="JZn-2B-0bN">
                                             <rect key="frame" x="15" y="0.0" width="290" height="43"/>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -37,11 +38,64 @@
                         </connections>
                     </tableView>
                     <extendedEdge key="edgesForExtendedLayout"/>
-                    <navigationItem key="navigationItem" id="MYh-Ja-8qZ"/>
+                    <navigationItem key="navigationItem" id="MYh-Ja-8qZ">
+                        <barButtonItem key="leftBarButtonItem" systemItem="play" id="Bkd-hf-2ur">
+                            <connections>
+                                <action selector="slowDataHandling:" destination="so5-12-nBI" id="nU4-YH-fnD"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="bQe-vw-Fcg">
+                            <connections>
+                                <segue destination="BaB-8l-2uO" kind="push" id="bPQ-l0-DxD"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aFX-u9-cSx" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="672" y="-382"/>
+        </scene>
+        <!--Add Item View Controller-->
+        <scene sceneID="bPP-F5-XEi">
+            <objects>
+                <viewController id="BaB-8l-2uO" customClass="AddItemViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="4Os-1y-oHj"/>
+                        <viewControllerLayoutGuide type="bottom" id="tfW-Oz-QP7"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="E0c-Mz-Fmm">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="date" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="HRa-Ef-sgx">
+                                <rect key="frame" x="16" y="64" width="288" height="504"/>
+                                <date key="date" timeIntervalSinceReferenceDate="490564023.83989203">
+                                    <!--2016-07-18 19:47:03 +0000-->
+                                </date>
+                            </datePicker>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailingMargin" secondItem="HRa-Ef-sgx" secondAttribute="trailing" id="0ES-88-H4P"/>
+                            <constraint firstItem="tfW-Oz-QP7" firstAttribute="top" secondItem="HRa-Ef-sgx" secondAttribute="bottom" id="ClP-Lq-sCj"/>
+                            <constraint firstItem="HRa-Ef-sgx" firstAttribute="leading" secondItem="E0c-Mz-Fmm" secondAttribute="leadingMargin" id="Gc0-J8-oED"/>
+                            <constraint firstItem="HRa-Ef-sgx" firstAttribute="top" secondItem="4Os-1y-oHj" secondAttribute="bottom" id="XJW-cj-UTE"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="on9-Xc-hfq">
+                        <barButtonItem key="rightBarButtonItem" systemItem="done" id="RSP-0e-gxf">
+                            <connections>
+                                <action selector="addItem:" destination="BaB-8l-2uO" id="4mU-Tn-poK"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="datePicker" destination="HRa-Ef-sgx" id="8iV-KE-dis"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="sZ4-4i-Tco" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1102" y="-382"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="rqV-Kp-gcv">
@@ -63,9 +117,4 @@
             <point key="canvasLocation" x="146" y="-382"/>
         </scene>
     </scenes>
-    <simulatedMetricsContainer key="defaultSimulatedMetrics">
-        <simulatedStatusBarMetrics key="statusBar"/>
-        <simulatedOrientationMetrics key="orientation"/>
-        <simulatedScreenMetrics key="destination" type="retina4"/>
-    </simulatedMetricsContainer>
 </document>
