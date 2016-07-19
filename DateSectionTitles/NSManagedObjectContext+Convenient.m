@@ -14,6 +14,17 @@
 
 
 @implementation NSManagedObjectContext (Convenient)
+- (void)saveRecursively {
+    [self saveAndHandle];
+    if (!self.parentContext) {
+        return;
+    }
+    
+    [self.parentContext performBlockAndWait:^{
+        [self.parentContext saveAndHandle];
+    }];
+}
+
 // copied from Apple's APLAppDelegate
 - (void)saveAndHandle {
     NSError *error;

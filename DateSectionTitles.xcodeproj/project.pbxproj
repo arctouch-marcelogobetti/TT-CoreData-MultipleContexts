@@ -23,6 +23,7 @@
 		3A10F5781D3D6D8A004B6BCB /* AddItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A10F5771D3D6D8A004B6BCB /* AddItemViewController.m */; };
 		3A10F57C1D3D74F4004B6BCB /* NSString+Custom.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A10F57B1D3D74F4004B6BCB /* NSString+Custom.m */; };
 		3A10F5801D3D761C004B6BCB /* NSManagedObjectContext+Convenient.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A10F57F1D3D761C004B6BCB /* NSManagedObjectContext+Convenient.m */; };
+		3A3EF1391D3E6D4700E9C5C8 /* CoreDataStack.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A3EF1381D3E6D4700E9C5C8 /* CoreDataStack.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -51,6 +52,8 @@
 		3A10F57B1D3D74F4004B6BCB /* NSString+Custom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Custom.m"; sourceTree = "<group>"; };
 		3A10F57E1D3D761C004B6BCB /* NSManagedObjectContext+Convenient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObjectContext+Convenient.h"; sourceTree = "<group>"; };
 		3A10F57F1D3D761C004B6BCB /* NSManagedObjectContext+Convenient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSManagedObjectContext+Convenient.m"; sourceTree = "<group>"; };
+		3A3EF1371D3E6D4700E9C5C8 /* CoreDataStack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreDataStack.h; sourceTree = "<group>"; };
+		3A3EF1381D3E6D4700E9C5C8 /* CoreDataStack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoreDataStack.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -100,14 +103,12 @@
 		28311B52175A7ED80090C416 /* DateSectionTitles */ = {
 			isa = PBXGroup;
 			children = (
+				3A3EF13A1D3E72F400E9C5C8 /* Core Data */,
 				3A10F57D1D3D74FD004B6BCB /* Categories */,
 				3A10F5791D3D6D9C004B6BCB /* AddItemViewController.h */,
 				3A10F5771D3D6D8A004B6BCB /* AddItemViewController.m */,
 				28311B6E175A7F9F0090C416 /* APLMasterViewController.h */,
 				28311B6F175A7F9F0090C416 /* APLMasterViewController.m */,
-				28311B64175A7ED80090C416 /* DateSectionTitles.xcdatamodeld */,
-				28311B6C175A7F9F0090C416 /* APLEvent.h */,
-				28311B6D175A7F9F0090C416 /* APLEvent.m */,
 				28311B5B175A7ED80090C416 /* APLAppDelegate.h */,
 				28311B5C175A7ED80090C416 /* APLAppDelegate.m */,
 				283C619017BD3B1200F143CA /* Images.xcassets */,
@@ -137,6 +138,18 @@
 				3A10F57F1D3D761C004B6BCB /* NSManagedObjectContext+Convenient.m */,
 			);
 			name = Categories;
+			sourceTree = "<group>";
+		};
+		3A3EF13A1D3E72F400E9C5C8 /* Core Data */ = {
+			isa = PBXGroup;
+			children = (
+				28311B64175A7ED80090C416 /* DateSectionTitles.xcdatamodeld */,
+				28311B6C175A7F9F0090C416 /* APLEvent.h */,
+				28311B6D175A7F9F0090C416 /* APLEvent.m */,
+				3A3EF1371D3E6D4700E9C5C8 /* CoreDataStack.h */,
+				3A3EF1381D3E6D4700E9C5C8 /* CoreDataStack.m */,
+			);
+			name = "Core Data";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -210,6 +223,7 @@
 				3A10F5781D3D6D8A004B6BCB /* AddItemViewController.m in Sources */,
 				3A10F57C1D3D74F4004B6BCB /* NSString+Custom.m in Sources */,
 				28311B5D175A7ED80090C416 /* APLAppDelegate.m in Sources */,
+				3A3EF1391D3E6D4700E9C5C8 /* CoreDataStack.m in Sources */,
 				3A10F5801D3D761C004B6BCB /* NSManagedObjectContext+Convenient.m in Sources */,
 				28311B66175A7ED80090C416 /* DateSectionTitles.xcdatamodeld in Sources */,
 				28311B70175A7F9F0090C416 /* APLEvent.m in Sources */,

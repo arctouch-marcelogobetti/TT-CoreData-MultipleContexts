@@ -53,6 +53,4 @@
 
 @interface APLMasterViewController : UITableViewController <NSFetchedResultsControllerDelegate>
 
-@property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
-
 @end

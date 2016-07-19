@@ -48,8 +48,8 @@
  */
 
 #import "APLMasterViewController.h"
-#import "APLAppDelegate.h"
 #import "APLEvent.h"
+#import "CoreDataStack.h"
 #import "NSManagedObjectContext+Convenient.h"
 #import "NSString+Custom.h"
 
@@ -158,13 +158,15 @@
         return _fetchedResultsController;
     }
 
+    NSManagedObjectContext* uiMoc = [CoreDataStack mainQueueMoc];
+    
     /*
 	 Set up the fetched results controller.
      */
 	// Create the fetch request for the entity.
 	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
 	// Edit the entity name as appropriate.
-	NSEntityDescription *entity = [NSEntityDescription entityForName:@"APLEvent" inManagedObjectContext:self.managedObjectContext];
+	NSEntityDescription *entity = [NSEntityDescription entityForName:@"APLEvent" inManagedObjectContext:uiMoc];
 	[fetchRequest setEntity:entity];
 
 	// Set the batch size to a suitable number.
@@ -175,7 +177,7 @@
 	[fetchRequest setSortDescriptors:@[sortDescriptor ]];
 
     // Use the sectionIdentifier property to group into sections.
-    _fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:self.managedObjectContext sectionNameKeyPath:@"sectionIdentifier" cacheName:nil];
+    _fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:uiMoc sectionNameKeyPath:@"sectionIdentifier" cacheName:nil];
     _fetchedResultsController.delegate = self;
 
 	return _fetchedResultsController;
@@ -225,17 +227,17 @@
 #pragma mark UI actions
 
 - (IBAction)slowDataHandling:(UIBarButtonItem *)sender {
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-        APLAppDelegate* appDelegate = [[UIApplication sharedApplication] delegate];
-        
+    NSManagedObjectContext *moc = [CoreDataStack createChildMoc];
+    [moc performBlock:^{
         [NSThread sleepForTimeInterval:5]; // simulating any kind of slow operation
-        APLEvent *newEvent = [NSEntityDescription insertNewObjectForEntityForName:@"APLEvent" inManagedObjectContext:[appDelegate managedObjectContext]];
+        APLEvent *newEvent = [NSEntityDescription insertNewObjectForEntityForName:@"APLEvent" inManagedObjectContext:moc];
         NSDate* date = [self randomDate];
         NSLog(@"%@", date);
         newEvent.timeStamp = date;
         newEvent.title = [NSString customStringFromDate:date];
-        [[appDelegate managedObjectContext] saveAndHandle];
-    });
+        
+        [moc saveRecursively];
+    }];
 }
 
 - (NSDate *)randomDate {

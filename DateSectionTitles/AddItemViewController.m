@@ -11,9 +11,8 @@
 //
 
 #import "AddItemViewController.h"
-#import <CoreData/CoreData.h>
-#import "APLAppDelegate.h"
 #import "APLEvent.h"
+#import "CoreDataStack.h"
 #import "NSManagedObjectContext+Convenient.h"
 #import "NSString+Custom.h"
 
@@ -32,12 +31,11 @@
         return;
     }
     
-    APLAppDelegate* appDelegate = [[UIApplication sharedApplication] delegate];
-    
-    APLEvent *newEvent = [NSEntityDescription insertNewObjectForEntityForName:@"APLEvent" inManagedObjectContext:[appDelegate managedObjectContext]];
+    NSManagedObjectContext* uiMoc = [CoreDataStack mainQueueMoc];
+    APLEvent *newEvent = [NSEntityDescription insertNewObjectForEntityForName:@"APLEvent" inManagedObjectContext:uiMoc];
     newEvent.timeStamp = date;
     newEvent.title = [NSString customStringFromDate:date];
-    [[appDelegate managedObjectContext] saveAndHandle];
+    [uiMoc saveRecursively];
     
     [self.navigationController popViewControllerAnimated:YES];
 }

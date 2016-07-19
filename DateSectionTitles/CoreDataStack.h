@@ -12,7 +12,9 @@
 
 #import <CoreData/CoreData.h>
 
+@interface CoreDataStack : NSObject
 
-@interface NSManagedObjectContext (Convenient)
-- (void)saveRecursively;
++ (NSManagedObjectContext *)mainQueueMoc;
++ (NSManagedObjectContext *)createChildMoc;
+
 @end
