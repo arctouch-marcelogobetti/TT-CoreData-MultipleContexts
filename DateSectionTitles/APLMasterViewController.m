@@ -171,12 +171,11 @@
         NSManagedObjectContext *moc = [CoreDataStack createChildMoc];
         [moc performBlock:^{
             NSError* error;
-            NSLog(@"%@", [objectToDelete objectID]);
             NSManagedObject* objectToDeleteInPrivateMoc = [moc existingObjectWithID:[objectToDelete objectID] error:&error];
             NSAssert(error == nil, @"Error while trying to access object to delete in the private MOC: %@", [error userInfo]);
             NSAssert(objectToDeleteInPrivateMoc, @"Returned object to delete is nil in the private MOC");
             
-            //[NSThread sleepForTimeInterval:5]; // simulating any kind of slow operation
+            [NSThread sleepForTimeInterval:5]; // simulating any kind of slow operation
             [moc deleteObject:objectToDeleteInPrivateMoc];
             [moc saveRecursively];
             
@@ -267,7 +266,7 @@
 - (void)slowDataHandling:(UIRefreshControl *)sender {
     NSManagedObjectContext *moc = [CoreDataStack createChildMoc];
     [moc performBlock:^{
-        //[NSThread sleepForTimeInterval:5]; // simulating any kind of slow operation
+        [NSThread sleepForTimeInterval:5]; // simulating any kind of slow operation
         APLEvent *newEvent = [NSEntityDescription insertNewObjectForEntityForName:@"APLEvent" inManagedObjectContext:moc];
         NSDate* date = [self randomDate];
         NSLog(@"%@", date);
