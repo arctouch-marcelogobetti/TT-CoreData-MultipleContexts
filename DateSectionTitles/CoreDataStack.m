@@ -17,6 +17,7 @@
 {
     NSManagedObjectModel* _managedObjectModel;
     NSPersistentStoreCoordinator* _persistentStoreCoordinator;
+    NSManagedObjectContext* _masterMoc;
     NSManagedObjectContext* _mainQueueMoc;
 }
 @end
@@ -52,13 +53,28 @@
         return [self instance]->_mainQueueMoc;
     }
     
-    NSPersistentStoreCoordinator *coordinator = [[self instance] persistentStoreCoordinator];
-    if (coordinator != nil)
-    {
-        [self instance]->_mainQueueMoc = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
-        [[self instance]->_mainQueueMoc setPersistentStoreCoordinator:coordinator];
+    if (![[self instance] masterMoc]) {
+        return nil;
     }
+    
+    [self instance]->_mainQueueMoc = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
+    [self instance]->_mainQueueMoc.parentContext = [[self instance] masterMoc];
     return [self instance]->_mainQueueMoc;
+}
+
+- (NSManagedObjectContext *)masterMoc {
+    if (_masterMoc)
+    {
+        return _masterMoc;
+    }
+    
+    if (![self persistentStoreCoordinator]) {
+        return nil;
+    }
+    
+    _masterMoc = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
+    _masterMoc.persistentStoreCoordinator = [self persistentStoreCoordinator];
+    return _masterMoc;
 }
 
 #pragma mark - Original methods from Apple

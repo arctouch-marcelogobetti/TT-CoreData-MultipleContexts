@@ -21,7 +21,7 @@
     }
     
     [self.parentContext performBlockAndWait:^{
-        [self.parentContext saveAndHandle];
+        [self.parentContext saveRecursively];
     }];
 }
 
