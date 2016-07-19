@@ -55,13 +55,24 @@
 
 
 @interface APLMasterViewController ()
-
-@property (nonatomic) NSFetchedResultsController *fetchedResultsController;
-
+{
+    NSFetchedResultsController* _fetchedResultsController;
+    NSManagedObjectContext* _uiMoc;
+}
 @end
 
 
 @implementation APLMasterViewController
+
+- (NSManagedObjectContext *)uiMoc {
+    if (_uiMoc != nil)
+    {
+        return _uiMoc;
+    }
+    
+    _uiMoc = [CoreDataStack mainQueueMoc];
+    return _uiMoc;
+}
 
 - (void)viewDidLoad
 {
@@ -69,7 +80,7 @@
 
 	NSError *error;
 
-	if (![self.fetchedResultsController performFetch:&error])
+	if (![[self fetchedResultsController] performFetch:&error])
     {
         /*
          Replace this implementation with code to handle the error appropriately.
@@ -79,20 +90,26 @@
         NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
 		abort();
 	}
+    
+    // Refresh control:
+    self.refreshControl = [[UIRefreshControl alloc] init];
+    [self.refreshControl addTarget:self
+                            action:@selector(slowDataHandling:)
+                  forControlEvents:UIControlEventValueChanged];
 }
 
 #pragma mark - Table view methods
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-	NSInteger count = [[self.fetchedResultsController sections] count];
+	NSInteger count = [[[self fetchedResultsController] sections] count];
 	return count;
 }
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-	id <NSFetchedResultsSectionInfo> sectionInfo = [[self.fetchedResultsController sections] objectAtIndex:section];
+	id <NSFetchedResultsSectionInfo> sectionInfo = [[[self fetchedResultsController] sections] objectAtIndex:section];
 
 	NSInteger count = [sectionInfo numberOfObjects];
 	return count;
@@ -108,7 +125,7 @@
      */
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
 
-	APLEvent *event = [self.fetchedResultsController objectAtIndexPath:indexPath];
+	APLEvent *event = [[self fetchedResultsController] objectAtIndexPath:indexPath];
 	cell.textLabel.text = event.title;
 
     return cell;
@@ -117,7 +134,7 @@
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-	id <NSFetchedResultsSectionInfo> theSection = [[self.fetchedResultsController sections] objectAtIndex:section];
+	id <NSFetchedResultsSectionInfo> theSection = [[[self fetchedResultsController] sections] objectAtIndex:section];
 
     /*
      Section information derives from an event's sectionIdentifier, which is a string representing the number (year * 1000) + month.
@@ -148,6 +165,23 @@
 	return titleString;
 }
 
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+        id objectToDelete = [[self fetchedResultsController] objectAtIndexPath:indexPath];
+        NSManagedObjectContext *moc = [CoreDataStack createChildMoc];
+        [moc performBlock:^{
+            [NSThread sleepForTimeInterval:5]; // simulating any kind of slow operation
+            [moc deleteObject:objectToDelete];
+            [moc saveRecursively];
+            
+            if ([[self fetchedResultsController].fetchedObjects count] == 0) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self onEditOrDoneTap:nil];
+                });
+            }
+        }];
+    }
+}
 
 #pragma mark - Fetched results controller
 
@@ -157,8 +191,6 @@
     {
         return _fetchedResultsController;
     }
-
-    NSManagedObjectContext* uiMoc = [CoreDataStack mainQueueMoc];
     
     /*
 	 Set up the fetched results controller.
@@ -166,7 +198,7 @@
 	// Create the fetch request for the entity.
 	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
 	// Edit the entity name as appropriate.
-	NSEntityDescription *entity = [NSEntityDescription entityForName:@"APLEvent" inManagedObjectContext:uiMoc];
+	NSEntityDescription *entity = [NSEntityDescription entityForName:@"APLEvent" inManagedObjectContext:[self uiMoc]];
 	[fetchRequest setEntity:entity];
 
 	// Set the batch size to a suitable number.
@@ -177,7 +209,7 @@
 	[fetchRequest setSortDescriptors:@[sortDescriptor ]];
 
     // Use the sectionIdentifier property to group into sections.
-    _fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:uiMoc sectionNameKeyPath:@"sectionIdentifier" cacheName:nil];
+    _fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:[self uiMoc] sectionNameKeyPath:@"sectionIdentifier" cacheName:nil];
     _fetchedResultsController.delegate = self;
 
 	return _fetchedResultsController;
@@ -226,7 +258,7 @@
 
 #pragma mark UI actions
 
-- (IBAction)slowDataHandling:(UIBarButtonItem *)sender {
+- (void)slowDataHandling:(UIRefreshControl *)sender {
     NSManagedObjectContext *moc = [CoreDataStack createChildMoc];
     [moc performBlock:^{
         [NSThread sleepForTimeInterval:5]; // simulating any kind of slow operation
@@ -237,6 +269,10 @@
         newEvent.title = [NSString customStringFromDate:date];
         
         [moc saveRecursively];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.refreshControl endRefreshing];
+        });
     }];
 }
 
@@ -246,6 +282,20 @@
     int daysInterval = d.quot;
     int randomDay = arc4random_uniform(daysInterval);
     return [NSDate dateWithTimeIntervalSinceReferenceDate:(double)randomDay * 86400.0];
+}
+
+- (IBAction)onEditOrDoneTap:(UIBarButtonItem *)sender {
+    self.tableView.editing = !self.tableView.editing;
+    
+    UIBarButtonItem* barButtonItem;
+    if (self.tableView.editing) {
+        barButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(onEditOrDoneTap:)];
+    }
+    else {
+        barButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(onEditOrDoneTap:)];
+    }
+    
+    self.navigationItem.leftBarButtonItem = barButtonItem;
 }
 
 @end
