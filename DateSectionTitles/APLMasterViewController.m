@@ -225,14 +225,17 @@
 #pragma mark UI actions
 
 - (IBAction)slowDataHandling:(UIBarButtonItem *)sender {
-    APLAppDelegate* appDelegate = [[UIApplication sharedApplication] delegate];
-    
-    [NSThread sleepForTimeInterval:5]; // simulating any kind of slow operation
-    APLEvent *newEvent = [NSEntityDescription insertNewObjectForEntityForName:@"APLEvent" inManagedObjectContext:[appDelegate managedObjectContext]];
-    NSDate* date = [self randomDate];
-    newEvent.timeStamp = date;
-    newEvent.title = [NSString customStringFromDate:date];
-    [[appDelegate managedObjectContext] saveAndHandle];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+        APLAppDelegate* appDelegate = [[UIApplication sharedApplication] delegate];
+        
+        [NSThread sleepForTimeInterval:5]; // simulating any kind of slow operation
+        APLEvent *newEvent = [NSEntityDescription insertNewObjectForEntityForName:@"APLEvent" inManagedObjectContext:[appDelegate managedObjectContext]];
+        NSDate* date = [self randomDate];
+        NSLog(@"%@", date);
+        newEvent.timeStamp = date;
+        newEvent.title = [NSString customStringFromDate:date];
+        [[appDelegate managedObjectContext] saveAndHandle];
+    });
 }
 
 - (NSDate *)randomDate {
