@@ -170,8 +170,13 @@
         id objectToDelete = [[self fetchedResultsController] objectAtIndexPath:indexPath];
         NSManagedObjectContext *moc = [CoreDataStack createChildMoc];
         [moc performBlock:^{
+            NSError* error;
+            NSManagedObject* objectToDeleteInPrivateMoc = [moc existingObjectWithID:[objectToDelete objectID] error:&error];
+            NSAssert(error == nil, @"Error while trying to access object to delete in the private MOC: %@", [error userInfo]);
+            NSAssert(objectToDeleteInPrivateMoc, @"Returned object to delete is nil in the private MOC");
+            
             [NSThread sleepForTimeInterval:5]; // simulating any kind of slow operation
-            [moc deleteObject:objectToDelete];
+            [moc deleteObject:objectToDeleteInPrivateMoc];
             [moc saveRecursively];
             
             if ([[self fetchedResultsController].fetchedObjects count] == 0) {
