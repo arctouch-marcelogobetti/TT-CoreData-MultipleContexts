@@ -36,15 +36,30 @@
     return instance;
 }
 
-+ (NSManagedObjectContext *)createChildMoc {
-    if (![self mainQueueMoc]) {
++ (NSManagedObjectContext *)createChildMocForMoc:(NSManagedObjectContext *)moc {
+    if (!moc) {
         return nil;
     }
     
     NSManagedObjectContext* privateMoc = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
-    privateMoc.parentContext = [self mainQueueMoc];
+    privateMoc.parentContext = moc;
     
     return privateMoc;
+}
+
++ (NSManagedObjectContext *)createChildMoc {
+    return [self createChildMocForMoc:[self mainQueueMoc]];
+}
+
++ (NSManagedObjectContext *)createScratchpadMoc {
+    if (![self mainQueueMoc]) {
+        return nil;
+    }
+    
+    NSManagedObjectContext* scratchpadMoc = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
+    scratchpadMoc.parentContext = [self mainQueueMoc];
+    
+    return scratchpadMoc;
 }
 
 + (NSManagedObjectContext *)mainQueueMoc {

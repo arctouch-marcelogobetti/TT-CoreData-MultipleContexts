@@ -15,6 +15,8 @@
 @interface CoreDataStack : NSObject
 
 + (NSManagedObjectContext *)mainQueueMoc;
++ (NSManagedObjectContext *)createScratchpadMoc;
++ (NSManagedObjectContext *)createChildMocForMoc:(NSManagedObjectContext *)moc;
 + (NSManagedObjectContext *)createChildMoc;
 
 @end

@@ -70,7 +70,7 @@
         return _uiMoc;
     }
     
-    _uiMoc = [CoreDataStack mainQueueMoc];
+    _uiMoc = [CoreDataStack createScratchpadMoc];
     return _uiMoc;
 }
 
@@ -168,21 +168,41 @@
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         id objectToDelete = [[self fetchedResultsController] objectAtIndexPath:indexPath];
-        NSManagedObjectContext *moc = [CoreDataStack createChildMoc];
+        NSManagedObjectContext *moc = [CoreDataStack createChildMocForMoc:[self uiMoc]];
         [moc performBlock:^{
             NSError* error;
             NSManagedObject* objectToDeleteInPrivateMoc = [moc existingObjectWithID:[objectToDelete objectID] error:&error];
             NSAssert(error == nil, @"Error while trying to access object to delete in the private MOC: %@", [error userInfo]);
             NSAssert(objectToDeleteInPrivateMoc, @"Returned object to delete is nil in the private MOC");
             
-            [NSThread sleepForTimeInterval:5]; // simulating any kind of slow operation
             [moc deleteObject:objectToDeleteInPrivateMoc];
-            [moc saveRecursively];
+            [moc save:&error]; // changes are pushed only 1 level up, i.e. only to the uiMoc, not to the PSC
+            NSAssert(error == nil, @"Error while trying to save private MOC after deleting object: %@", [error userInfo]);
             
             if ([[self fetchedResultsController].fetchedObjects count] == 0) {
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [self onEditOrDoneTap:nil];
                 });
+            }
+            
+            [NSThread sleepForTimeInterval:5]; // simulating any kind of slow operation
+            
+            if (arc4random() % 2) {
+                NSLog(@"Deletion authorized!");
+                // save to the PSC:
+                [[self uiMoc] performBlock:^{
+                    [[self uiMoc] saveRecursively];
+                }];
+            }
+            else {
+                NSLog(@"Deletion denied.");
+                // undo changes:
+                [[self uiMoc] performBlock:^{
+                    NSError* error;
+                    [[self uiMoc] rollback]; // reverts ALL unsaved changes in the uiMoc
+                    [[self uiMoc] save:&error]; // no need to save parent contexts
+                    NSAssert(error == nil, @"Error while trying to save the UI MOC after reverting deletion of object: %@", [error userInfo]);
+                }];
             }
         }];
     }
