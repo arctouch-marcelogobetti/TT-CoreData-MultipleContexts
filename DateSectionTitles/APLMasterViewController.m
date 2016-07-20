@@ -71,6 +71,7 @@
     }
     
     _uiMoc = [CoreDataStack createScratchpadMoc];
+    _uiMoc.undoManager = [[NSUndoManager alloc] init];
     return _uiMoc;
 }
 
