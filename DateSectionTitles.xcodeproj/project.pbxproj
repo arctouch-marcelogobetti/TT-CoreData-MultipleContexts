@@ -24,19 +24,7 @@
 		3A10F57C1D3D74F4004B6BCB /* NSString+Custom.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A10F57B1D3D74F4004B6BCB /* NSString+Custom.m */; };
 		3A10F5801D3D761C004B6BCB /* NSManagedObjectContext+Convenient.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A10F57F1D3D761C004B6BCB /* NSManagedObjectContext+Convenient.m */; };
 		3A3EF1391D3E6D4700E9C5C8 /* CoreDataStack.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A3EF1381D3E6D4700E9C5C8 /* CoreDataStack.m */; };
-		3A3EF1421D3E8A2100E9C5C8 /* DateSectionTitlesTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A3EF1411D3E8A2100E9C5C8 /* DateSectionTitlesTests.m */; };
-		3A3EF1491D3EA68E00E9C5C8 /* CoreDataStack.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A3EF1381D3E6D4700E9C5C8 /* CoreDataStack.m */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXContainerItemProxy section */
-		3A3EF1441D3E8A2100E9C5C8 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 28311B3F175A7ED70090C416 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 28311B46175A7ED70090C416;
-			remoteInfo = DateSectionTitles;
-		};
-/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		280EFD7C175A9A6D00265080 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainStoryboard.storyboard; sourceTree = "<group>"; };
@@ -66,9 +54,6 @@
 		3A10F57F1D3D761C004B6BCB /* NSManagedObjectContext+Convenient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSManagedObjectContext+Convenient.m"; sourceTree = "<group>"; };
 		3A3EF1371D3E6D4700E9C5C8 /* CoreDataStack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreDataStack.h; sourceTree = "<group>"; };
 		3A3EF1381D3E6D4700E9C5C8 /* CoreDataStack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoreDataStack.m; sourceTree = "<group>"; };
-		3A3EF13F1D3E8A2000E9C5C8 /* DateSectionTitlesTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DateSectionTitlesTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		3A3EF1411D3E8A2100E9C5C8 /* DateSectionTitlesTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DateSectionTitlesTests.m; sourceTree = "<group>"; };
-		3A3EF1431D3E8A2100E9C5C8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -83,13 +68,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		3A3EF13C1D3E8A2000E9C5C8 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -98,7 +76,6 @@
 			children = (
 				3A10F5751D3D062F004B6BCB /* Default-568h@2x.png */,
 				28311B52175A7ED80090C416 /* DateSectionTitles */,
-				3A3EF1401D3E8A2000E9C5C8 /* DateSectionTitlesTests */,
 				28311B49175A7ED70090C416 /* Frameworks */,
 				28311B48175A7ED70090C416 /* Products */,
 			);
@@ -108,7 +85,6 @@
 			isa = PBXGroup;
 			children = (
 				28311B47175A7ED70090C416 /* DateSectionTitles.app */,
-				3A3EF13F1D3E8A2000E9C5C8 /* DateSectionTitlesTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -176,15 +152,6 @@
 			name = "Core Data";
 			sourceTree = "<group>";
 		};
-		3A3EF1401D3E8A2000E9C5C8 /* DateSectionTitlesTests */ = {
-			isa = PBXGroup;
-			children = (
-				3A3EF1411D3E8A2100E9C5C8 /* DateSectionTitlesTests.m */,
-				3A3EF1431D3E8A2100E9C5C8 /* Info.plist */,
-			);
-			path = DateSectionTitlesTests;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -205,24 +172,6 @@
 			productReference = 28311B47175A7ED70090C416 /* DateSectionTitles.app */;
 			productType = "com.apple.product-type.application";
 		};
-		3A3EF13E1D3E8A2000E9C5C8 /* DateSectionTitlesTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 3A3EF1461D3E8A2100E9C5C8 /* Build configuration list for PBXNativeTarget "DateSectionTitlesTests" */;
-			buildPhases = (
-				3A3EF13B1D3E8A2000E9C5C8 /* Sources */,
-				3A3EF13C1D3E8A2000E9C5C8 /* Frameworks */,
-				3A3EF13D1D3E8A2000E9C5C8 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				3A3EF1451D3E8A2100E9C5C8 /* PBXTargetDependency */,
-			);
-			name = DateSectionTitlesTests;
-			productName = DateSectionTitlesTests;
-			productReference = 3A3EF13F1D3E8A2000E9C5C8 /* DateSectionTitlesTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -232,12 +181,6 @@
 				CLASSPREFIX = APL;
 				LastUpgradeCheck = 0730;
 				ORGANIZATIONNAME = "Apple Inc.";
-				TargetAttributes = {
-					3A3EF13E1D3E8A2000E9C5C8 = {
-						CreatedOnToolsVersion = 7.3.1;
-						TestTargetID = 28311B46175A7ED70090C416;
-					};
-				};
 			};
 			buildConfigurationList = 28311B42175A7ED70090C416 /* Build configuration list for PBXProject "DateSectionTitles" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -253,7 +196,6 @@
 			projectRoot = "";
 			targets = (
 				28311B46175A7ED70090C416 /* DateSectionTitles */,
-				3A3EF13E1D3E8A2000E9C5C8 /* DateSectionTitlesTests */,
 			);
 		};
 /* End PBXProject section */
@@ -267,13 +209,6 @@
 				3A10F5761D3D062F004B6BCB /* Default-568h@2x.png in Resources */,
 				283C619117BD3B1200F143CA /* Images.xcassets in Resources */,
 				28311B57175A7ED80090C416 /* InfoPlist.strings in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		3A3EF13D1D3E8A2000E9C5C8 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -296,24 +231,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		3A3EF13B1D3E8A2000E9C5C8 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				3A3EF1421D3E8A2100E9C5C8 /* DateSectionTitlesTests.m in Sources */,
-				3A3EF1491D3EA68E00E9C5C8 /* CoreDataStack.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		3A3EF1451D3E8A2100E9C5C8 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 28311B46175A7ED70090C416 /* DateSectionTitles */;
-			targetProxy = 3A3EF1441D3E8A2100E9C5C8 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		280EFD7B175A9A6D00265080 /* MainStoryboard.storyboard */ = {
@@ -416,64 +334,6 @@
 			};
 			name = Release;
 		};
-		3A3EF1471D3E8A2100E9C5C8 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				DEBUG_INFORMATION_FORMAT = dwarf;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				INFOPLIST_FILE = DateSectionTitlesTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MTL_ENABLE_DEBUG_INFO = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.arctouch.DateSectionTitlesTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/DateSectionTitles.app/DateSectionTitles";
-			};
-			name = Debug;
-		};
-		3A3EF1481D3E8A2100E9C5C8 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				ENABLE_NS_ASSERTIONS = NO;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				INFOPLIST_FILE = DateSectionTitlesTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = com.arctouch.DateSectionTitlesTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/DateSectionTitles.app/DateSectionTitles";
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -491,15 +351,6 @@
 			buildConfigurations = (
 				28311B6A175A7ED80090C416 /* Debug */,
 				28311B6B175A7ED80090C416 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		3A3EF1461D3E8A2100E9C5C8 /* Build configuration list for PBXNativeTarget "DateSectionTitlesTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				3A3EF1471D3E8A2100E9C5C8 /* Debug */,
-				3A3EF1481D3E8A2100E9C5C8 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
