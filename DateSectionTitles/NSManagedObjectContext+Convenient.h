@@ -14,5 +14,6 @@
 
 
 @interface NSManagedObjectContext (Convenient)
-- (void)saveRecursively;
+- (void)saveAndHandle;
+- (void)saveAll;
 @end

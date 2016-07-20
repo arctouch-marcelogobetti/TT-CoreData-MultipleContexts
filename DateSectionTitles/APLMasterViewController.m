@@ -58,6 +58,7 @@
 {
     NSFetchedResultsController* _fetchedResultsController;
     NSManagedObjectContext* _uiMoc;
+    NSManagedObjectContext* _privateMoc;
 }
 @end
 
@@ -72,6 +73,16 @@
     
     _uiMoc = [CoreDataStack mainQueueMoc];
     return _uiMoc;
+}
+
+- (NSManagedObjectContext *)privateMoc {
+    if (_privateMoc != nil)
+    {
+        return _privateMoc;
+    }
+    
+    _privateMoc = [CoreDataStack privateQueueMoc];
+    return _privateMoc;
 }
 
 - (void)viewDidLoad
@@ -168,17 +179,19 @@
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         id objectToDelete = [[self fetchedResultsController] objectAtIndexPath:indexPath];
-        NSManagedObjectContext *moc = [CoreDataStack createChildMoc];
-        [moc performBlock:^{
-            [NSThread sleepForTimeInterval:5]; // simulating any kind of slow operation
-            [moc deleteObject:objectToDelete];
-            [moc saveRecursively];
+        [[self privateMoc] performBlock:^{
+            NSLog(@"Deleting object: %@", ((APLEvent*)objectToDelete).title);
             
-            if ([[self fetchedResultsController].fetchedObjects count] == 0) {
-                dispatch_async(dispatch_get_main_queue(), ^{
+            [NSThread sleepForTimeInterval:5]; // simulating any kind of slow operation
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [[self uiMoc] deleteObject:objectToDelete];
+                [[self uiMoc] saveAll];
+                
+                if ([[self fetchedResultsController].fetchedObjects count] == 0) {
                     [self onEditOrDoneTap:nil];
-                });
-            }
+                }
+            });
         }];
     }
 }
@@ -259,21 +272,18 @@
 #pragma mark UI actions
 
 - (void)slowDataHandling:(UIRefreshControl *)sender {
-    NSManagedObjectContext *moc = [CoreDataStack createChildMoc];
-    [moc performBlock:^{
-        [NSThread sleepForTimeInterval:5]; // simulating any kind of slow operation
-        APLEvent *newEvent = [NSEntityDescription insertNewObjectForEntityForName:@"APLEvent" inManagedObjectContext:moc];
-        NSDate* date = [self randomDate];
-        NSLog(@"%@", date);
-        newEvent.timeStamp = date;
-        newEvent.title = [NSString customStringFromDate:date];
-        
-        [moc saveRecursively];
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self.refreshControl endRefreshing];
-        });
-    }];
+    [NSThread sleepForTimeInterval:2]; // simulating any kind of slow operation
+    APLEvent *newEvent = [NSEntityDescription insertNewObjectForEntityForName:@"APLEvent" inManagedObjectContext:[self uiMoc]];
+    NSDate* date = [self randomDate];
+    NSLog(@"%@", date);
+    newEvent.timeStamp = date;
+    newEvent.title = [NSString customStringFromDate:date];
+    
+    [[self uiMoc] saveAll];
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.refreshControl endRefreshing];
+    });
 }
 
 - (NSDate *)randomDate {

@@ -11,13 +11,16 @@
 //
 
 #import "CoreDataStack.h"
+#import "NSManagedObjectContext+Convenient.h"
 
 
 @interface CoreDataStack ()
 {
     NSManagedObjectModel* _managedObjectModel;
     NSPersistentStoreCoordinator* _persistentStoreCoordinator;
+    NSManagedObjectContext* _masterMoc;
     NSManagedObjectContext* _mainQueueMoc;
+    NSManagedObjectContext* _privateQueueMoc;
 }
 @end
 
@@ -35,15 +38,20 @@
     return instance;
 }
 
-+ (NSManagedObjectContext *)createChildMoc {
-    if (![self mainQueueMoc]) {
++ (NSManagedObjectContext *)privateQueueMoc {
+    if ([self instance]->_privateQueueMoc)
+    {
+        return [self instance]->_privateQueueMoc;
+    }
+    
+    if (![[self instance] masterMoc]) {
         return nil;
     }
     
-    NSManagedObjectContext* privateMoc = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
-    privateMoc.parentContext = [self mainQueueMoc];
+    [self instance]->_privateQueueMoc = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
+    [self instance]->_privateQueueMoc.parentContext = [[self instance] masterMoc];
     
-    return privateMoc;
+    return [self instance]->_privateQueueMoc;
 }
 
 + (NSManagedObjectContext *)mainQueueMoc {
@@ -52,13 +60,50 @@
         return [self instance]->_mainQueueMoc;
     }
     
-    NSPersistentStoreCoordinator *coordinator = [[self instance] persistentStoreCoordinator];
+    if (![[self instance] masterMoc]) {
+        return nil;
+    }
+    
+    [self instance]->_mainQueueMoc = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
+    [self instance]->_mainQueueMoc.parentContext = [[self instance] masterMoc];
+    
+    return [self instance]->_mainQueueMoc;
+}
+
+- (NSManagedObjectContext *)masterMoc {
+    if (_masterMoc)
+    {
+        return _masterMoc;
+    }
+    
+    NSPersistentStoreCoordinator *coordinator = [self persistentStoreCoordinator];
     if (coordinator != nil)
     {
-        [self instance]->_mainQueueMoc = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
-        [[self instance]->_mainQueueMoc setPersistentStoreCoordinator:coordinator];
+        _masterMoc = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
+        [_masterMoc setPersistentStoreCoordinator:coordinator];
     }
-    return [self instance]->_mainQueueMoc;
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(masterContextDidSaveNotification:)
+                                                 name:NSManagedObjectContextDidSaveNotification
+                                               object:_masterMoc];
+    
+    return _masterMoc;
+}
+
++ (void)saveMasterContext {
+    [[self instance]->_masterMoc saveAndHandle];
+}
+
+#pragma mark - Life-cycle and notifications
+
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (void)masterContextDidSaveNotification:(NSNotification *)notification {
+    [_mainQueueMoc mergeChangesFromContextDidSaveNotification:notification];
+    [_privateQueueMoc mergeChangesFromContextDidSaveNotification:notification];
 }
 
 #pragma mark - Original methods from Apple

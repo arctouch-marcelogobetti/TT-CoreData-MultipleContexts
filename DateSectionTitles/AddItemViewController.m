@@ -31,11 +31,11 @@
         return;
     }
     
-    NSManagedObjectContext* uiMoc = [CoreDataStack mainQueueMoc];
-    APLEvent *newEvent = [NSEntityDescription insertNewObjectForEntityForName:@"APLEvent" inManagedObjectContext:uiMoc];
+    NSManagedObjectContext* privateMoc = [CoreDataStack privateQueueMoc];
+    APLEvent *newEvent = [NSEntityDescription insertNewObjectForEntityForName:@"APLEvent" inManagedObjectContext:privateMoc];
     newEvent.timeStamp = date;
     newEvent.title = [NSString customStringFromDate:date];
-    [uiMoc saveRecursively];
+    [privateMoc saveAll];
     
     [self.navigationController popViewControllerAnimated:YES];
 }

@@ -15,6 +15,7 @@
 @interface CoreDataStack : NSObject
 
 + (NSManagedObjectContext *)mainQueueMoc;
-+ (NSManagedObjectContext *)createChildMoc;
++ (NSManagedObjectContext *)privateQueueMoc;
++ (void)saveMasterContext;
 
 @end
