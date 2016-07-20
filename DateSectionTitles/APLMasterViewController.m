@@ -71,7 +71,14 @@
     }
     
     _uiMoc = [CoreDataStack createScratchpadMoc];
+    [CoreDataStack registerMainQueueMocObserver:_uiMoc];
     return _uiMoc;
+}
+
+- (void)dealloc {
+    if ([self uiMoc]) {
+        [CoreDataStack removeMainQueueMocObserver:[self uiMoc]];
+    }
 }
 
 - (void)viewDidLoad

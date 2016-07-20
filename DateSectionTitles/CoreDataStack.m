@@ -19,6 +19,8 @@
     NSPersistentStoreCoordinator* _persistentStoreCoordinator;
     NSManagedObjectContext* _masterMoc;
     NSManagedObjectContext* _mainQueueMoc;
+    NSMutableArray<NSManagedObjectContext*>* _mainQueueMocObserversArray;
+    BOOL _didAddMainQueueMocObserver;
 }
 @end
 
@@ -90,6 +92,47 @@
     _masterMoc = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
     _masterMoc.persistentStoreCoordinator = [self persistentStoreCoordinator];
     return _masterMoc;
+}
+
+#pragma mark - Observers and notifications
+
++ (void)registerMainQueueMocObserver:(NSManagedObjectContext *)moc {
+    if (![self instance]->_didAddMainQueueMocObserver) {
+        [self instance]->_mainQueueMocObserversArray = [NSMutableArray new];
+        [[NSNotificationCenter defaultCenter] addObserver:[self instance]
+                                                 selector:@selector(mainQueueMocDidSaveNotification:)
+                                                     name:NSManagedObjectContextDidSaveNotification
+                                                   object:[self mainQueueMoc]];
+        
+        [self instance]->_didAddMainQueueMocObserver = YES;
+    }
+    
+    [[self instance]->_mainQueueMocObserversArray addObject:moc];
+}
+
++ (void)removeMainQueueMocObserver:(NSManagedObjectContext *)moc {
+    [[self instance]->_mainQueueMocObserversArray removeObject:moc];
+    
+    if ([[self instance]->_mainQueueMocObserversArray count] == 0) {
+        [[NSNotificationCenter defaultCenter] removeObserver:self];
+        [self instance]->_didAddMainQueueMocObserver = NO;
+    }
+}
+
+- (void)mainQueueMocDidSaveNotification:(NSNotification *)notification {
+    for (NSManagedObjectContext* observerMoc in _mainQueueMocObserversArray) {
+        [observerMoc performBlock:^{
+            [observerMoc mergeChangesFromContextDidSaveNotification:notification];
+        }];
+    }
+}
+
+#pragma mark - Life-cycle
+
+- (void)dealloc {
+    if (_didAddMainQueueMocObserver) {
+        [[NSNotificationCenter defaultCenter] removeObserver:self];
+    }
 }
 
 #pragma mark - Original methods from Apple

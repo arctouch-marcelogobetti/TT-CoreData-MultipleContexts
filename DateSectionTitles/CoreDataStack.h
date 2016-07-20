@@ -18,5 +18,7 @@
 + (NSManagedObjectContext *)createScratchpadMoc;
 + (NSManagedObjectContext *)createChildMocForMoc:(NSManagedObjectContext *)moc;
 + (NSManagedObjectContext *)createChildMoc;
++ (void)registerMainQueueMocObserver:(NSManagedObjectContext *)moc;
++ (void)removeMainQueueMocObserver:(NSManagedObjectContext *)moc;
 
 @end
