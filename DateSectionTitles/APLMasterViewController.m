@@ -199,7 +199,7 @@
                 // undo changes:
                 [[self uiMoc] performBlock:^{
                     NSError* error;
-                    [[self uiMoc] rollback]; // reverts ALL unsaved changes in the uiMoc
+                    [[self uiMoc] undo]; // reverts the last unsaved change in the uiMoc
                     [[self uiMoc] save:&error]; // no need to save parent contexts
                     NSAssert(error == nil, @"Error while trying to save the UI MOC after reverting deletion of object: %@", [error userInfo]);
                 }];
