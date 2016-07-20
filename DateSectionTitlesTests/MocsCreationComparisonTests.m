@@ -16,12 +16,12 @@
 #define ITERATIONS 5000
 
 
-@interface DateSectionTitlesTests : XCTestCase
+@interface MocsCreationComparisonTests : XCTestCase
 
 @end
 
 
-@implementation DateSectionTitlesTests
+@implementation MocsCreationComparisonTests
 
 - (void)setUp {
     [super setUp];

@@ -23,8 +23,9 @@
 		3A10F5781D3D6D8A004B6BCB /* AddItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A10F5771D3D6D8A004B6BCB /* AddItemViewController.m */; };
 		3A10F57C1D3D74F4004B6BCB /* NSString+Custom.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A10F57B1D3D74F4004B6BCB /* NSString+Custom.m */; };
 		3A10F5801D3D761C004B6BCB /* NSManagedObjectContext+Convenient.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A10F57F1D3D761C004B6BCB /* NSManagedObjectContext+Convenient.m */; };
+		3A1A5D4B1D3FD0DC0061BBB8 /* ContextSavingTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A1A5D4A1D3FD0DC0061BBB8 /* ContextSavingTests.m */; };
 		3A3EF1391D3E6D4700E9C5C8 /* CoreDataStack.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A3EF1381D3E6D4700E9C5C8 /* CoreDataStack.m */; };
-		3A3EF1421D3E8A2100E9C5C8 /* DateSectionTitlesTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A3EF1411D3E8A2100E9C5C8 /* DateSectionTitlesTests.m */; };
+		3A3EF1421D3E8A2100E9C5C8 /* MocsCreationComparisonTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A3EF1411D3E8A2100E9C5C8 /* MocsCreationComparisonTests.m */; };
 		3A3EF1491D3EA68E00E9C5C8 /* CoreDataStack.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A3EF1381D3E6D4700E9C5C8 /* CoreDataStack.m */; };
 /* End PBXBuildFile section */
 
@@ -64,10 +65,11 @@
 		3A10F57B1D3D74F4004B6BCB /* NSString+Custom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Custom.m"; sourceTree = "<group>"; };
 		3A10F57E1D3D761C004B6BCB /* NSManagedObjectContext+Convenient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObjectContext+Convenient.h"; sourceTree = "<group>"; };
 		3A10F57F1D3D761C004B6BCB /* NSManagedObjectContext+Convenient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSManagedObjectContext+Convenient.m"; sourceTree = "<group>"; };
+		3A1A5D4A1D3FD0DC0061BBB8 /* ContextSavingTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContextSavingTests.m; sourceTree = "<group>"; };
 		3A3EF1371D3E6D4700E9C5C8 /* CoreDataStack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreDataStack.h; sourceTree = "<group>"; };
 		3A3EF1381D3E6D4700E9C5C8 /* CoreDataStack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoreDataStack.m; sourceTree = "<group>"; };
 		3A3EF13F1D3E8A2000E9C5C8 /* DateSectionTitlesTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DateSectionTitlesTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		3A3EF1411D3E8A2100E9C5C8 /* DateSectionTitlesTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DateSectionTitlesTests.m; sourceTree = "<group>"; };
+		3A3EF1411D3E8A2100E9C5C8 /* MocsCreationComparisonTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MocsCreationComparisonTests.m; sourceTree = "<group>"; };
 		3A3EF1431D3E8A2100E9C5C8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -179,7 +181,8 @@
 		3A3EF1401D3E8A2000E9C5C8 /* DateSectionTitlesTests */ = {
 			isa = PBXGroup;
 			children = (
-				3A3EF1411D3E8A2100E9C5C8 /* DateSectionTitlesTests.m */,
+				3A1A5D4A1D3FD0DC0061BBB8 /* ContextSavingTests.m */,
+				3A3EF1411D3E8A2100E9C5C8 /* MocsCreationComparisonTests.m */,
 				3A3EF1431D3E8A2100E9C5C8 /* Info.plist */,
 			);
 			path = DateSectionTitlesTests;
@@ -300,8 +303,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3A3EF1421D3E8A2100E9C5C8 /* DateSectionTitlesTests.m in Sources */,
+				3A3EF1421D3E8A2100E9C5C8 /* MocsCreationComparisonTests.m in Sources */,
 				3A3EF1491D3EA68E00E9C5C8 /* CoreDataStack.m in Sources */,
+				3A1A5D4B1D3FD0DC0061BBB8 /* ContextSavingTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
