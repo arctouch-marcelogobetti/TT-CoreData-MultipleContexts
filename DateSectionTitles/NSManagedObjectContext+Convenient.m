@@ -12,17 +12,36 @@
 
 #import "NSManagedObjectContext+Convenient.h"
 
-
 @implementation NSManagedObjectContext (Convenient)
+
+NSInteger _requestsToSaveToDisk;
+
 - (void)saveRecursively {
     [self saveAndHandle];
     if (!self.parentContext) {
         return;
     }
     
-    [self.parentContext performBlockAndWait:^{
-        [self.parentContext saveRecursively];
+    NSManagedObjectContext* parentContext = self.parentContext;
+    if (!parentContext.parentContext) {
+        // parentContext is the master context
+        [self requestToSaveMoc:parentContext];
+        return;
+    }
+    
+    [parentContext performBlockAndWait:^{
+        [parentContext saveRecursively];
     }];
+}
+
+- (void)requestToSaveMoc:(NSManagedObjectContext *)moc {
+    _requestsToSaveToDisk++;
+    if (_requestsToSaveToDisk == 10) {
+        [moc performBlockAndWait:^{
+            [moc saveAndHandle];
+        }];
+        _requestsToSaveToDisk = 0;
+    }
 }
 
 // copied from Apple's APLAppDelegate
